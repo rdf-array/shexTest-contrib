@@ -1,0 +1,217 @@
+{
+ "suite": "shexTest-contrib",
+ "tests": [
+  {
+   "test": "validation-contrib/manifest#collRef1to2_two_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.elements_each_satisfy_the_element_shape",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"accepts a sequence of the right length whose elements conform\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collRef1to2_one_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.one_element_is_enough"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collRef1to2_three_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.too_many_elements",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"checks the bounds\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collRef1to2_empty_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.too_few_elements",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"checks the bounds\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collRef1to2_badElement_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.an_element_fails_the_element_shape",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"reports the elements that fail, by index\"",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"follows shape references from the elements\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collRef1to2_notSeq_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.not_a_sequence",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"wants a sequence\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt_literal_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.not_a_sequence"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt_empty_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.any_length_including_empty",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"accepts the empty sequence where the bounds allow it\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt_three_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.any_length_including_empty"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt_mixed_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.any_length_including_empty"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt2_two_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.exact_length"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt2_one_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.exact_length"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt2_three_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.exact_length"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt1Plus_empty_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.at_least_one"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt1Plus_one_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.at_least_one"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collInt1Plus_four_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.at_least_one"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collNested_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.nested_collections",
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"nests\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collNested_pairInside_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.nested_collections"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collNested_flat_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexCollection.nested_collections"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collDot_empty_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"RDF-: anything\" with ()"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collDot_mixed_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"is none of the node kinds, but matches `.`\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collDot_notSeq_fail",
+   "duplicates": [
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"RDF-: anything\" with a non-sequence"
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collIriOrInt_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/Collection-test.js (parser) \"takes a shape expression of any kind\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collValueIri_seq_fail",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/Collection-test.js \"is none of the node kinds, but matches `.`\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collColour_red_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"red\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collColour_pink_fail",
+   "duplicates": [
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"pink has only two components\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collPolygon_triangle_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"a triangle\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#collPlaylist_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"two tracks\""
+   ]
+  },
+  {
+   "test": "negativeSyntax-contrib/manifest#collBoundsStar",
+   "duplicates": [
+    "shex.js-array packages/shex-parser/test/Collection-test.js \"rejects malformed bounds\""
+   ]
+  },
+  {
+   "test": "negativeSyntax-contrib/manifest#collBoundsNoComma",
+   "duplicates": [
+    "shex.js-array packages/shex-parser/test/Collection-test.js \"rejects malformed bounds\""
+   ]
+  },
+  {
+   "test": "negativeSyntax-contrib/manifest#collBoundsNoMin",
+   "duplicates": [
+    "shex.js-array packages/shex-parser/test/Collection-test.js \"rejects malformed bounds\""
+   ]
+  },
+  {
+   "test": "negativeSyntax-contrib/manifest#collBoundsThree",
+   "duplicates": [
+    "shex.js-array packages/shex-parser/test/Collection-test.js \"rejects malformed bounds\""
+   ]
+  },
+  {
+   "test": "negativeSyntax-contrib/manifest#collBoundsEmpty",
+   "duplicates": [
+    "shex.js-array packages/shex-parser/test/Collection-test.js \"rejects malformed bounds\""
+   ]
+  },
+  {
+   "test": "negativeSyntax-contrib/manifest#collBoundsUnclosed",
+   "duplicates": [
+    "shex.js-array packages/shex-parser/test/Collection-test.js \"rejects malformed bounds\""
+   ]
+  }
+ ]
+}
