@@ -1,0 +1,9 @@
+{
+  "name": "shex-test-contrib",
+  "version": "0.1.0",
+  "description": "rdf-array: shared ShEx-array tests (Collection shape expressions) that no shexTest suite contains, laid out like shexTest's *-contrib directories.",
+  "main": "index.js",
+  "repository": "github:rdf-array/shexTest-contrib",
+  "license": "W3C-20150513",
+  "files": ["index.js", "context.jsonld", "schemas-contrib/", "validation-contrib/", "negativeSyntax-contrib/"]
+}
