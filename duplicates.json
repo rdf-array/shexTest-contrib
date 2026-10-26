@@ -126,7 +126,7 @@
   {
    "test": "validation-contrib/manifest#collDot_empty_pass",
    "duplicates": [
-    "shex.js-array packages/shex-webapp/examples/manifest.json \"RDF-: anything\" with ()"
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"rdf-array: anything\" with ()"
    ]
   },
   {
@@ -138,7 +138,7 @@
   {
    "test": "validation-contrib/manifest#collDot_notSeq_fail",
    "duplicates": [
-    "shex.js-array packages/shex-webapp/examples/manifest.json \"RDF-: anything\" with a non-sequence"
+    "shex.js-array packages/shex-webapp/examples/manifest.json \"rdf-array: anything\" with a non-sequence"
    ]
   },
   {
