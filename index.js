@@ -1,5 +1,5 @@
 // The corpus directories, for implementations that depend on this repository
-// ("shex-test-contrib": "github:rdf-array/shexTest-contrib#main").
+// ("shex-test-contrib": "github:rdf-array/shexTest-contrib#rdf-sequences").
 const path = require("path");
 module.exports = {
   schemas: path.join(__dirname, "schemas-contrib/"),
