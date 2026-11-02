@@ -124,6 +124,89 @@
    "duplicates": [
     "shex.js-array packages/shex-webapp/examples/manifest.json \"two tracks\""
    ]
+  },
+  {
+   "test": "validation-contrib/manifest#listInt_undef_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexList.slot_satisfies_no_member",
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"satisfies no member, . and NOT included\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#listDot_undef_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexList.slot_satisfies_no_member",
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"satisfies no member, . and NOT included\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#listNotInt_undef_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexList.slot_satisfies_no_member",
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"satisfies no member, . and NOT included\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefIntOrSlot_mixed_pass",
+   "duplicates": [
+    "jena-array jena-shex TestShexList.undef_member",
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"is matched by undef, and nothing else is\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefIntOrSlot_dense_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"is matched by undef, and nothing else is\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefTuple_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"is matched by undef, and nothing else is\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefTuple_value_fail",
+   "duplicates": [
+    "jena-array jena-shex TestShexList.undef_member",
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"is matched by undef, and nothing else is\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefShorthand_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"is matched by undef, and nothing else is\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefShorthand_empty_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"is matched by undef, and nothing else is\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefCount_two_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"counts in the length\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefCount_one_fail",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"counts in the length\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefNested_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"leaves a sequence holding one a value like any\""
+   ]
+  },
+  {
+   "test": "validation-contrib/manifest#undefWholeValue_pass",
+   "duplicates": [
+    "shex.js-array packages/shex-validator/test/ListShape-test.js \"leaves a sequence holding one a value like any\""
+   ]
   }
  ]
 }

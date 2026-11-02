@@ -39,6 +39,15 @@ and reproduces every one of those files and verdicts unchanged.
 [contrib-duplicates.md](https://github.com/rdf-array/rdf-array/blob/rdf-sequences/management/contrib-duplicates.md) in
 rdf-array/rdf-array lists which implementation test each case reproduces.
 
+## Slots (branch `rdf-undef`)
+
+On this branch the manifests also carry the empty slot of a sequence
+([rdf-undef.md](https://github.com/rdf-array/rdf-array/blob/rdf-undef/docs/rdf-undef.md) §5): no value constraint is met at a
+slot, `.` and `NOT` included, and `undef` in place of a member matches one and nothing else, as in
+`LIST ( ( xsd:integer | undef ) * )` or `LIST * undef`. Note that `LIST ( xsd:integer | undef ) *` is a list of one member,
+whose `*` counts triples (`undefTripleCard`). ShExJ writes `{ "type": "Undef", "min": m, "max": n }`, a sibling of `Member`;
+ShExR writes `sx:Undef`. These tests have `undef` in their names and require `ra:UndefSlots`.
+
 ## Using it from JavaScript
 
 `package.json` makes the repository an npm dependency (`"shex-test-contrib": "github:rdf-array/shexTest-contrib#rdf-sequences"`);

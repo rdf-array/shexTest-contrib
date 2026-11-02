@@ -16,6 +16,10 @@ The LIST syntax (rdf-array's docs/array-syntax.md §2, its ShExJ and ShExR §7) 
 from the array-syntax harness parser; this script, run against shex.js-array and jena-array, then
 reproduced them unchanged.
 
+The rdf-undef branch adds the empty slot of a sequence (rdf-array's docs/rdf-undef.md §5): no value
+constraint is met at a slot, `.` included, and `undef` in place of a member matches one. Every such test
+has undef in its name and requires ra:UndefSlots.
+
 `duplicates` names the implementation tests a case reproduces; rdf-array/rdf-array's
 contrib-duplicates.md is generated from it (tools/contrib-duplicates.py).
 """
@@ -39,6 +43,7 @@ CHECK = '--check' in sys.argv
 
 P = 'PREFIX : <http://a.example/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n\n'
 LIST, SEQ = 'ra:ListShapeExpression', 'ra:Sequences'
+UNDEF = LIST + ', ra:UndefSlots'
 # name: comment, ShExC, requirement (what a test of the schema needs beyond ShEx)
 SCHEMAS = {
     'listRef1to2': ('a sequence of one or two nodes, each with an integer :q',
@@ -85,6 +90,16 @@ SCHEMAS = {
     'listTree': ('a tree is a (label children) pair whose children are trees: recursion through two LISTs',
                  P + ':Node { :node @:Tree }\n\n:Matrix { :matrix @:Tree }\n\n'
                      ':Tree LIST ( xsd:string ; LIST ( @:Tree * ) )\n', LIST),
+    # docs/rdf-undef.md §5: undef in place of a member
+    'undefIntOrSlot': ('any number of members, each an integer or an empty slot', P + ':S1 { :p1 LIST ( ( xsd:integer | undef ) * ) }\n', UNDEF),
+    'undefTuple': ('a string, an empty slot, an integer', P + ':S1 { :p1 LIST ( xsd:string ; undef ; xsd:integer ) }\n', UNDEF),
+    'undefShorthand': ('any number of empty slots: undef in the LIST card x form', P + ':S1 { :p1 LIST * undef }\n', UNDEF),
+    'undefCount': ('exactly two empty slots', P + ':S1 { :p1 LIST ( undef {2} ) }\n', UNDEF),
+    'undefUpperCase': ('an optional empty slot then an integer; undef in any case', P + ':S1 { :p1 LIST ( UNDEF ? ; xsd:integer ) }\n', UNDEF),
+    'undefNested': ('rows of two members, each an integer or an empty slot', P + ':S1 { :p1 LIST * LIST ( ( xsd:integer | undef ) {2} ) }\n', UNDEF),
+    'undefTripleCard': ('LIST ( x | undef ) * is one member, and its * counts the triples', P + ':S1 { :p1 LIST ( xsd:integer | undef ) * }\n', UNDEF),
+    'undefPrefix': ('undef:p1 is a prefixed name and undef alone a slot', P + 'PREFIX undef: <http://a.example/>\n\n:S1 { undef:p1 LIST ( xsd:integer ; undef ) }\n', UNDEF),
+    'undefWholeValue': ('a sequence is a value of a triple constraint, whatever it holds', P + ':S1 { :p1 . }\n', UNDEF),
 }
 
 D = 'PREFIX : <http://a.example/>\n\n'
@@ -169,6 +184,34 @@ VALIDATION = [
     ('listIntsOrPairs_m1_fail', 'listIntsOrPairs', M1, 'm1', 'Matrix', False, 'a row of three is neither an integer nor a pair', []),
     ('listTree_tree_pass', 'listTree', TREE, 'tree', 'Node', True, 'a root with two children, one of them with a leaf; () is an empty list of children', []),
     ('listTree_m1_fail', 'listTree', M1, 'm1', 'Matrix', False, 'a row of integers is not a (label children) pair', []),
+    # docs/rdf-undef.md §5: no value constraint is met at a slot, and undef matches nothing else
+    ('listInt_undef_fail', 'listInt', ':n1 :p1 (1 undef) .', 'n1', 'S1', False, 'a slot does not satisfy xsd:integer', [f'{J}.slot_satisfies_no_member', f'{V} "satisfies no member, . and NOT included"']),
+    ('listDot_undef_fail', 'listDot', ':n1 :p1 (1 undef) .', 'n1', 'S1', False, 'a slot does not satisfy .', [f'{J}.slot_satisfies_no_member', f'{V} "satisfies no member, . and NOT included"']),
+    ('listNotInt_undef_fail', 'listNotInt', ':n1 :p1 (:x undef) .', 'n1', 'S1', False, 'a slot does not satisfy NOT xsd:integer', [f'{J}.slot_satisfies_no_member', f'{V} "satisfies no member, . and NOT included"']),
+    ('listInt2_undef_fail', 'listInt2', ':n1 :p1 (1 undef) .', 'n1', 'S1', False, 'the length is right and the slot is not an integer', []),
+    ('listNested_undef_fail', 'listNested', ':n1 :p1 ((undef)) .', 'n1', 'S1', False, 'a slot at depth two does not satisfy @:T', []),
+    ('undefIntOrSlot_mixed_pass', 'undefIntOrSlot', ':n1 :p1 (1 undef 3) .', 'n1', 'S1', True, 'undef matches the slot', [f'{J}.undef_member', f'{V} "is matched by undef, and nothing else is"']),
+    ('undefIntOrSlot_dense_pass', 'undefIntOrSlot', ':n1 :p1 (1 2) .', 'n1', 'S1', True, 'undef allows a slot and does not require one', [f'{V} "is matched by undef, and nothing else is"']),
+    ('undefIntOrSlot_allSlots_pass', 'undefIntOrSlot', ':n1 :p1 (undef undef) .', 'n1', 'S1', True, 'nothing but slots', []),
+    ('undefIntOrSlot_empty_pass', 'undefIntOrSlot', ':n1 :p1 () .', 'n1', 'S1', True, 'the empty sequence', []),
+    ('undefIntOrSlot_string_fail', 'undefIntOrSlot', ':n1 :p1 (1 undef "a") .', 'n1', 'S1', False, 'a string is neither an integer nor a slot', []),
+    ('undefTuple_pass', 'undefTuple', ':n1 :p1 ("a" undef 1) .', 'n1', 'S1', True, 'a slot at the second position', [f'{V} "is matched by undef, and nothing else is"']),
+    ('undefTuple_value_fail', 'undefTuple', ':n1 :p1 ("a" 2 1) .', 'n1', 'S1', False, 'undef does not match a value', [f'{J}.undef_member', f'{V} "is matched by undef, and nothing else is"']),
+    ('undefTuple_short_fail', 'undefTuple', ':n1 :p1 ("a" 1) .', 'n1', 'S1', False, 'undef does not match an absence: a slot counts', []),
+    ('undefShorthand_pass', 'undefShorthand', ':n1 :p1 (undef undef) .', 'n1', 'S1', True, 'LIST * undef over slots', [f'{V} "is matched by undef, and nothing else is"']),
+    ('undefShorthand_empty_pass', 'undefShorthand', ':n1 :p1 () .', 'n1', 'S1', True, 'LIST * undef over the empty sequence', [f'{V} "is matched by undef, and nothing else is"']),
+    ('undefShorthand_value_fail', 'undefShorthand', ':n1 :p1 (undef 1) .', 'n1', 'S1', False, 'a member that is not a slot', []),
+    ('undefCount_two_pass', 'undefCount', ':n1 :p1 (undef undef) .', 'n1', 'S1', True, 'two slots', [f'{V} "counts in the length"']),
+    ('undefCount_one_fail', 'undefCount', ':n1 :p1 (undef) .', 'n1', 'S1', False, 'one slot is too few', [f'{V} "counts in the length"']),
+    ('undefCount_three_fail', 'undefCount', ':n1 :p1 (undef undef undef) .', 'n1', 'S1', False, 'three slots are too many', []),
+    ('undefUpperCase_slot_pass', 'undefUpperCase', ':n1 :p1 (undef 1) .', 'n1', 'S1', True, 'the optional slot taken', []),
+    ('undefUpperCase_none_pass', 'undefUpperCase', ':n1 :p1 (1) .', 'n1', 'S1', True, 'the optional slot left out', []),
+    ('undefNested_pass', 'undefNested', ':n1 :p1 ((1 undef) (undef 2)) .', 'n1', 'S1', True, 'slots at depth two', [f'{V} "leaves a sequence holding one a value like any"']),
+    ('undefNested_short_fail', 'undefNested', ':n1 :p1 ((1 undef) (undef)) .', 'n1', 'S1', False, 'a row of one', []),
+    ('undefTripleCard_slot_pass', 'undefTripleCard', ':n1 :p1 (undef) , (1) .', 'n1', 'S1', True, 'two triples, each with a list of one', []),
+    ('undefTripleCard_two_fail', 'undefTripleCard', ':n1 :p1 (1 undef) .', 'n1', 'S1', False, 'the * is not on the members: a list of two does not fit', []),
+    ('undefPrefix_pass', 'undefPrefix', ':n1 :p1 (1 undef) .', 'n1', 'S1', True, 'the prefix undef: and the slot side by side', []),
+    ('undefWholeValue_pass', 'undefWholeValue', ':n1 :p1 (1 undef) .', 'n1', 'S1', True, '. is met by the sequence; only its members are subject to the slot rule', [f'{V} "leaves a sequence holding one a value like any"']),
 ]
 
 # name, ShExC after the prefixes, comment; what the grammar of docs/array-syntax.md §2.1 rejects
@@ -179,6 +222,13 @@ NEGATIVE_SYNTAX = [
     ('listComma', ':S1 { :p1 LIST ( xsd:string , xsd:integer ) }', 'members are joined by ; and |, not by commas'),
     ('listAfterExtends', ':T { :q . }\n\n:S1 EXTENDS LIST + @:T { :p1 . }', 'LIST may not follow EXTENDS'),
     ('listOldBounds', ':S1 { :p1 ((xsd:integer))[1, *] }', 'the former ((x))[m, n] spelling is no longer syntax'),
+    ('undefOr', ':S1 { :p1 LIST ( xsd:integer OR undef ) }', 'undef is not a shape expression: write | '),
+    ('undefOrFirst', ':S1 { :p1 LIST ( undef OR xsd:integer ) }', 'undef is not a shape expression: it takes no OR'),
+    ('undefAnd', ':S1 { :p1 LIST ( undef AND . ) }', 'undef is not a shape expression: it takes no AND'),
+    ('undefNot', ':S1 { :p1 LIST ( NOT undef ) }', 'undef is not a shape expression: it takes no NOT'),
+    ('undefValueExpr', ':S1 { :p1 undef }', 'undef stands only in place of a list member, not as a value expression'),
+    ('undefDecl', ':S1 undef', 'undef is not a shape declaration'),
+    ('undefBareList', ':S1 { :p1 LIST undef }', 'a bare LIST x, as with any member'),
 ]
 NEG_DUP = []
 
@@ -292,7 +342,7 @@ def write_manifests():
     mf:name "{name}" ;
     rdfs:comment "{comment}" ;
     mf:status mf:Proposed ;
-    mf:requires {SCHEMAS[schema][2]} ;
+    mf:requires {UNDEF if "undef" in name.lower() else SCHEMAS[schema][2]} ;
     mf:action [
       sht:schema <../schemas-contrib/{schema}.shex> ;
       sht:shape <http://a.example/{shape}> ;
@@ -309,7 +359,7 @@ def write_manifests():
     mf:name "{name}" ;
     rdfs:comment "{comment}" ;
     mf:status mf:Proposed ;
-    mf:requires {LIST} ;
+    mf:requires {UNDEF if "undef" in name.lower() else LIST} ;
     sx:shex <{name}.shex> ;
     .
 '''
